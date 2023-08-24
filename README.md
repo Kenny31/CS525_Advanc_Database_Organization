@@ -1,0 +1,3 @@
+CS 525 Advanced Database Organization
+
+This project is part of my course curriculum in which we have to develop a database engine from scratch which has the potential to read and write data from memory to disk and vice versa. Page replacement strategies were also implemented for better efficiency and performance. Support for creating schemas, tables and deleting those as well along with CRUD operations on rows were also supported. 
