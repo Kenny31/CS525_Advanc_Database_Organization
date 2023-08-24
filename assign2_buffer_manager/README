@@ -1,0 +1,73 @@
+Group Number 6: 
+
+==================== Karan Batra (A20518491) (kbatra3@hawk.iit.edu)==================================================
+-markDirty
+This function marks a page as dirty. This function takes BM_BufferPool pointer object, and BM_PageHandle page pointer as parameters. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then the function checks if the manager object is null or not, if yes then an error message is returned. Otherwise, if page pointer is Null then an error message is returned saying that page doesn't exist. If not then the function checks the pageNum of this page pointer. If it is less than 0 then there is no existing page and a relevant message is returned. Otherwise, for all the pages in buffer pool, the function checks if the pageSerial of each manager object is equal to pageNumber or not. If yes then, then the function marks isDirtyFlag as true and subsequently a success message is returned.
+
+-isBufferFull
+This function takes BM_BufferPool pointer object, BM_PageHandle page pointer, a variable of type PageNumber, and a pointer of type BM_BufferPoolManager as parameters. It first initialises the pointer object of BM_BufferPoolManager with a memory of size equal to the size of BM_BufferPoolManager. Then openPageFile is called. If this function returns success message, then the function stores the data of BM_PageHandle pointer object in the data of manager object. Then readBlock is called. If this function returns success message, then we update the fixCount, isDirtyFlag of manager object with 1 and false respectively. The function subsequently increments the readIO of manager object by 1. Later if the strategy in Buffer Pool is FIFO, then we call FIFOStrategy method and if the strategy is LRU then the function LRUStrategy is called. Otherwise an output "Other strategies not implemented." is given. 
+
+-LRUStrategy
+This function takes BM_BufferPoolManager pointer object, BM_BufferPool pointer object as parameters.
+The function then declares file handle pointer of Storage Manager. Then for all the pages in Buffer Pool, if fixCount of buffer pool manager object is 0 then the function stores the page number and lastAccessed time. Subsequently, for all the iterations between total pages of buffer pool and  lastAccessed time, if lastAccessed time is less than the stored lastAccessed time then the function again stores the iteration number and updates the last stored lastAccessed time. If the 'isDirtyFlag' of buffer pool manager for this iteration is true then the function calls writeBlock function and then the writeIO of manager object is incremented by 1. Other data for manager object is also updated subsequently.
+
+-FIFOStrategy
+This function takes BM_BufferPoolManager pointer object, BM_BufferPool pointer object as parameters.
+The function then declares file handle pointer of Storage Manager. Then frontIndex and rearIndex of type int are calculated. For all the pages in the buffer pool, if the fixCount for manager object at frontIndex is not 0 then the frontIndex is incremented. And then if rearIndex is 0 then frontIndex is also assigned as 0. Otherwise, if isDirtyFlag for the manager object for frontIndex position is true then writeBlock function is called and then writeIO of this object is incremented by 1. In the end, other data of buffer pool manager for frontIndex is also updated.
+
+-initBufferPool
+creates a new buffer pool with numPages page frames using the page replacement strategy strategy. 
+The function first checks if the name of page file is NULL or not. If yes, then the function returns error message. If numPages is less than or equal to zero then the function returns a message saying There's no existing page. If none of these conditions match, then the function assigns a memory to the object of type Buffer Pool Manager. Subsequently, for each page, the function assigns zero and False values to all the data of Buffer Pool Manager object depending on the data type. Following this, the function updates the data of buffer pool and Buffer Pool Manager object is assigned to management data of Buffer Pool. Finally, a success message is returned.
+
+==================== Divyansh Prakhar Soni (A20517331) (dsoni2@hawk.iit.edu)==================================================
+
+-shutdownBufferPool
+Closes a buffer pool. This method frees up all data related with buffer pool.
+The function takes BM_BufferPool pointer as a parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then the function checks if the manager object is null or not, if yes then an error message is returned. Otherwise, the function first calls forceFlushPool function on buffer pool object in a variable. Subsequently, if this function returns 'OK' message, then the BM_BufferPoolManager object is made free, and subsequently all the data of buffer pool object is assigned with default values i.e; 0, null, -1 and success message is returned. 
+
+
+-forceFlushPool
+causes all dirty pages (with fix count 0)from the buffer pool to be written to disk.
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then the function checks if the manager object is null or not, if yes then an error message is returned. Otherwise, if the fixed count of manager object is less than 0 then an error message saying 'file not found' is returned, if not then a file handle of Storage Manager is declared and then for all the pages in the buffer pool object, values of isDirtyFlag and fixCount are checked. If these values are true and 0 respectively, then the functions openPageFile and writeBlock are called. Subsequently, the value of isDirtyFlag is assigned to be false and writeIO is incremented by 1. Finally a success message is returned.
+
+
+-unpinPage
+unpins the page. This function takes BM_BufferPool pointer object and BM_PageHandle page pointer as parameters. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then the function checks if the manager object is null or not, if yes then an error message is returned. Otherwise, the function checks if the page pointer is null. If yes then 'Page doesn't exist message is returned'. If the pointer is not null then pageNum parameter of page pointer is checked. If this is less than 0 then a message saying 'Page doesn't exist' is returned.
+Otherwise, for all the pages of Buffer pool if the pageSerial of Buffer Manager is equal to the pageNumber then the function reduces the fixCount by 1. Following this, a success message is returned. 
+
+
+-forcePage
+should write the current content of the page back to the page file on disk.
+This function takes BM_BufferPool pointer object and BM_PageHandle page pointer as parameters. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then the function checks if the manager object is null or not, if yes then an error message is returned. Otherwise, the function checks if the page pointer is null. If yes then 'Page doesn't exist message is returned'. If the pointer is not null then pageNum parameter of page pointer is checked. If this is less than 0 then a message saying 'Page doesn't exist' is returned.
+Otherwise, for all the pages of Buffer pool if the pageSerial of Buffer Manager is equal to the pageNumber, and subsequently if the isDirtyFlag is False then the function returns a success message.
+Otherwise, writeBlock function is called in a variable and writeIO of the manager objects are incremented by 1. If writeBlock returns success message, then isDirtyFlag is made to be False and success message is returned. 
+
+==================== Soham Kamble (A20517098) (skamble2@hawk.iit.edu)==================================================
+
+-pinPage
+This function takes BM_BufferPool pointer object and BM_PageHandle page pointer and a variable of type PageNumber as parameters. If there is nothing in the buffer pool, then check at 0th index if the page number is -1 or not. If yes, then the function allocates memory and then pins the page. If the pageNumber parameter of the function matches some iteration of the buffer pool, then the function initialises the data of buffer pool manager and then pins the page. If there is capacity in the buffer pool but page number is not matching then the function directly adds the data to memory and pins the page. And if buffer pool is full and new data is incoming, then the function takes a flag which tells if the capacity in buffer pool is full or not. If there is no capacity then the function uses some replacement strategy and then pins the page.
+
+
+-getFrameContents
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then a memory of size equal to that of total number of pages in the Buffer pool is assigned to a pointer of type PageNumber. Subsequently, for all the pages in the Buffer pool the function checks if the page serial of manager object is equal to -1. If so then the pageNumber is assigned -1. Otherwise, pageNumber is assigned with the pageSerial of manager object. In the end pageNumber is returned.
+
+-getDirtyFlags
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then a memory of size equal to the total number of pages in the Buffer Pool is assigned to a pointer of type boolean.
+Again if the Buffer Pool Manager object is null, then the function returns false, otherwise, for all the pages in the buffer pool, if the 'isDirtyFlag' is false, then dirtyFlag is assigned false. Otherwise it is assigned true. In the end, dirtyFlag is returned.
+
+-getFixCounts
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. Then a memory of size equal to the total number of pages in the Buffer Pool is assigned to a pointer of type integer.
+Again if the Buffer Pool Manager object is null, then the function returns false, otherwise, for all the pages in the buffer pool, if the 'fixCount' is equal to -1, then fixedCount is assigned 0. Otherwise it is assigned with the fixCount of manager. In the end, fixedCount is returned.
+
+
+-getNumReadIO
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. 
+Again if the Buffer Pool Manager object is null, then the function returns false, otherwise, readIO of Buffer Pool Manager is assigned to an integer type variable, and this variable is returned.
+
+-getNumWriteIO
+This function takes BM_BufferPool pointer object as parameter. It first initialises the pointer object of BM_BufferPoolManager with the management data of BM_BufferPool pointer. T
+Again if the Buffer Pool Manager object is null, then the function returns false, otherwise, writeIO of Buffer Pool Manager is assigned to an integer type variable, and this variable is returned.
+
+
+
+

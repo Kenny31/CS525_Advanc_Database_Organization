@@ -1,0 +1,53 @@
+Group Number 6: 
+
+==================== Karan Batra (A20518491) (kbatra3@hawk.iit.edu)==================================================
+-createPageFile
+creates a new page file. The initial size of file is one page. This method fill this
+single page with ’\0’ bytes.
+The functionality includes opening a file in 'w' mode and storing its address in a FILE type pointer.
+If this pointer points to some address then the method allocates a memory block of given size to the first page.
+
+-openPageFile
+opens an existing page file. It returns error message if the file does not exist. If opening the file is successful, then the fields of file handle are initialized with the information
+about the opened file.
+
+-closePageFile
+Opens the file in read mode, if there is no information in the file pointer or file handle, then it returns error message otherwise, all the fields of file handle are assigned with zero and null values according to the types. Subsequently an okay message is returned.
+
+-destroyPageFile
+If there is no file then error message is returned. However, if the file exists then this method removes the name of the file from the memory and deletes it. Following that a success flag value is checked for the presence of file. If it is true, success message is returned.
+
+==================== Soham Kamble (A20517098) (skamble2@hawk.iit.edu)==================================================
+-readBlock
+The method reads the block at position pageNum from a file and stores its content in the memory pointed to by the memPage page handle. If the file has less than pageNum pages, then the method returns error message.
+
+-getBlockPos
+Gives the current block position. This information is retrieved from the current page position parameter of File handle. 
+
+-readFirstBlock
+This function reads the first block. 0 is passed in the pageNum parameter of readBlock function, to achieve the message. Error message it returned if the block isn't read properly otherwise success message is returned.
+
+-readPreviousBlock
+The method reads previous block. To achieve this, position of the previous page is passed in the pageNum parameter of readBlock method, i.e; one less than the current page position parameter of file handle.
+
+-readCurrentBlock
+The function reads the contemporary block. Current page position parameter of the file handle is passed in the pageNum parameter of ReadBlock function to achieve this. Success message is returned if the block is read properly otherwise, error message is returned.
+
+-readNextBlock
+The method reads next upcoming block. To achieve this, position of the next page is passed in the pageNum parameter of readBlock method, i.e; one more than the current page position parameter of file handle.
+
+-readLastBlock
+The function reads the last block. One less than total number of pages parameter of the file handle is passed in the pageNum parameter of ReadBlock function to achieve this. Success message is returned if the block is read properly otherwise, error message is returned.
+
+==================== Divyansh Prakhar Soni (A20517331) (dsoni2@hawk.iit.edu)==================================================
+-writeBlock
+This function is used to write in a particular block. First of all, it opens file. If there is no information in the file handle or the file pointer doesn't point anywhere or if the page number is less than 0 or it is greater than or equal to the total number of pages, in that case, error message is returned. Otherwise, if the file position of the stream to the given offset is set, then write operation is performed using fwrite function. If not, error message is returned.
+
+-writeCurrentBlock
+This function takes the current page position parameter of file handle and that is passed in the writeBlock function. If write operation is performed successfully, success message is returned, otherwise an error message is returned.
+
+-appendEmptyBlock
+This function opens the file pointer in 'r+' mode and the increases the number of pages in the file by one. The last page added is filled with zero bytes.
+
+-ensureCapacity
+The function checks file handle and if the total number of pages parameter in file handle is less than numberOfPages then the function increases the value of this parameter and equalises it to numberOfPages.

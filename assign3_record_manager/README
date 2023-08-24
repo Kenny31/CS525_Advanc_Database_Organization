@@ -1,0 +1,84 @@
+Group Number 6: 
+
+Steps to run the code: 
+1. Open terminal 
+2. In order to compile the code, type 'make' and hit Enter key
+3. In order to run the code, type 'make run' and then hit the Enter key
+4. In order to clean all the existing binary files and objects, type 'make clean' and hit the Enter key.
+
+Functions used
+
+
+==================== Karan Batra (A20518491) (kbatra3@hawk.iit.edu)==================================================
+
+-initRecordManager
+The function takes pointer type parameter named management data. The function first takes allots a memory location to a pointer variable of Record Manager Handle. Subsequently, initStorageManager function is called. Following this, initBufferPool function is called in a RC type variable. If this variable contains 'OK' message, then return success message otherwise return 'File not initialised' message.
+
+-shutdownRecordManager
+The method calls shutdownBufferPool function and then further frees pointer variable of type Record Manager Handle. The message returned in shutdownBufferPool function is returned as the output of function.
+
+-createTable
+The function takes two parameters, i.e; a char type pointer 'name' and a Schema type pointer 'schema'. The function then checks if name variable is null or not. If yes, then the function returns 'File not found' error. Otherwise, createPageFile function is called. If the function returns 'oK' message, then set attributes of record manager handle to default. Then the function calls initBufferPool. If this function returns 'OK' message, then the function calls the following functions in order. openPageFile, writeBlock, closePageFile, markDirty, unpinPage, then shutdownBufferPool. 
+
+-openTable
+The function takes two parameters pointer variable of type Record Manager Table data and pointer variable of type char. The function then checks if either of these parameters is null. If yes, then the function returns 'File not found' message. Otherwise, the function assigns management data of real to a variable of type Record Manager Handle. The function then calls openPAgeFile function. If this returns 'OK' message, then the function calls readFirstBlock function. If this returns 'OK' message, then rmHandle attributes are updated. 
+
+-closeTable 
+The function takes pointer parameter of type Record Manager Table Data. If this parameter id null then the function returns 'File not found message'.
+Otherwise if management data of rmHandle is null then the function returns the message, 'File handle not initialised'. Otherwise, the function shutdownBufferPool is called by the function. If this returns 'OK' then the function frees rel and then success message is returned. 
+
+-deleteTable
+The function takes a pointer of type char. If this parameter is null then the function returns 'File not found' message. Otherwise, the function calls destroyPageFile method and returns success message.
+
+-getNumTuples
+The function takes pointer parameter of type Record Manager Table data. If this parameter is null, then update tupleCount to -1. Otherwise, update rmHandle and tupleCount, and then return tupleCount.
+
+
+==================== Soham Kamble (A20517098) (skamble2@hawk.iit.edu)==================================================
+
+
+-insertRecord
+The function takes two parameters, I.e; pointer variable of type Record manager Table data, and a pointer variable of type Record. If any of these parameters is null then the function returns 'File not found' message. Otherwise, the function calls getRecordSize function. Subsequently, pinPage method is called, if this method returns 'OK', then appendEmptyBlock function is called. Subsequently, a for loop is run by the method till PAGE_SIZE/recordSize iterations and memcpy is called in each iteration. Following the above method, markDirty, and unpinPage methods are called. Then number of tuples are incremented by 1, and success message is returned.
+
+-deleteRecord
+The function takes two parameters, I.e; pointer variable of type Record manager Table data 'rel', and a variable of type RID. If 'rel' or its management data is null then the function returns 'file not found' error. Otherwise, recordManager parameters are updated. Sub sequently, pinPage is called and then markDirty, unpinPage are also called. Number of tuples are decreased by 1. Then 'OK' message is returned.
+
+-updateRecord
+The function takes two parameters, I.e; pointer variable of type Record manager Table data, and a pointer variable of type Record. If 'rel' or its management data is null then the function returns 'file not found' error. Otherwise, recordManager handle parameters are updated. Subsequently, getRecordSize is called. Following this, pinPage, memcpy, markDirty and unpinPage are also called. In the end, success message is returned.
+
+-getRecord
+The function takes two parameters, I.e; pointer variable of type Record manager Table data, and a pointer variable of type Record. If 'rel' or its management data is null then the function returns 'file not found' error. Otherwise, recordManager handle parameters are updated. Subsequently, getRecordSize is called. Following this, pinPage, memcpy and unpinPage are also called. In the end, success message is returned.
+
+-startScan
+The function takes three pointer variables of types Record Manager Table data, Record Manager Scan Handle and Expo. If any of these variables is null then the function returns 'file not found' error. Subsequently, openTable function is called. The function then allocates a memory to a variable of type recordManagerHandle. Then parameters of rmHandle are updated. The function finally returns 'OK' message. 
+
+-next
+The function takes two pointer parameters, I.e; scan and record. The function first allocates a memory to a variable of type Value, following this evalExpr is called in loop. If the function returns 'OK' message, then the function calls getRecord. If the function returns 'OK' message, then record and scan are updated. In the end the number of scans are incremented by 1.
+
+-closeScan
+The function takes pointer variable of type RM Scan Handle. If this is null, then the function returns 'File not found' error. Otherwise, free management data of scan and assign null to it. Finally, a success message is returned. 
+
+==================== Divyansh Prakhar Soni (A20517331) (dsoni2@hawk.iit.edu)==================================================
+
+-getRecordSize
+The function takes a pointer parameter of type Schema. If the parameter id Null then the function returns 'file not found' error. Otherwise, cases are run inside a loop till iterations equal to the number of attributes. In the end, size of the cell is returned.
+
+-createSchema
+The function takes multiple parameters. If any of numAttr, attrNames or dataTypes is null then the method returns 'File not found' error. Otherwise, a memory is allocated to a variable of type schema. All the attributes of this variable are updated, and a success message is returned in the end. 
+
+-freeSchema
+The function takes a pointer parameter of type Schema. If the parameter is null then the function returns 'file not found' message. Otherwise, schema is allotted to rmHandle and the schema is freed. Further, null is set in the schema and then the rmHandle is freed. Finally, 'OK' message is returned.
+
+-createRecord
+The function takes two parameters, I.e; a double pointer of type record and a pointer variable of type Schema. If any of these is NULL, then the function returns 'File not found' message. Otherwise, a new memory is allocated to a variable of type record. The function then calls the method getRecordSize. Then the attributes of this record type variable are updated. Success message is returned.
+
+-freeRecord
+The function takes a pointer parameter of type record. If this parameter id null then the function returns a 'File not found' error. Otherwise, the function frees this record. Then the function finally returns success message.
+
+-getAttr
+The function takes four parameters, two pointers of type Record and Schema, and one int type variable and a double pointer of type Value. If any of the pointers is Null then the function returns 'File not found' message, or if the int variable value is less than 0, then too 'File not found' message is returned. Otherwise, cases for different datatypes are run inside a loop, and then operations are done accordingly based on the data type, and in the end a success message is returned.
+
+-setAttr
+The function takes four parameters, three pointer variables of types record, schema, and value and an integer type variable. If any of the pointers is Null then the function returns 'File not found' message, or if the int variable value is less than 0, then too 'File not found' message is returned. 
+Otherwise, cases are run based on the type of data. Operations are performed according to the type of data. In the end, success message is returned.
+
